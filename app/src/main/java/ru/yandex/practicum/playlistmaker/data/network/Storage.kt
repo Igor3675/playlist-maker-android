@@ -63,6 +63,36 @@ class Storage {
             trackName = "Sweet Child O'Mine",
             artistName = "Guns N' Roses",
             trackTimeMillis = 303000
+        ),
+        TrackDto(
+            id = "11",
+            trackName = "Here Comes The Sun",
+            artistName = "The Beatles",
+            trackTimeMillis = 185000
+        ),
+        TrackDto(
+            id = "12",
+            trackName = "Yesterday",
+            artistName = "The Beatles",
+            trackTimeMillis = 125000
+        ),
+        TrackDto(
+            id = "13",
+            trackName = "Let It Be",
+            artistName = "The Beatles",
+            trackTimeMillis = 243000
+        ),
+        TrackDto(
+            id = "14",
+            trackName = "Hey Jude",
+            artistName = "The Beatles",
+            trackTimeMillis = 431000
+        ),
+        TrackDto(
+            id = "15",
+            trackName = "Come Together",
+            artistName = "The Beatles",
+            trackTimeMillis = 259000
         )
     )
 

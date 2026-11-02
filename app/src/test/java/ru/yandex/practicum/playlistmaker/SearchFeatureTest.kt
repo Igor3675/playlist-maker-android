@@ -25,6 +25,9 @@ class SearchFeatureTest {
         val kinoResults = storage.search("kInO")
         assertEquals(2, kinoResults.size)
 
+        val beatlesResults = storage.search("the beatles")
+        assertEquals(5, beatlesResults.size)
+
         val nirvanaResults = storage.search("smells like")
         assertEquals(1, nirvanaResults.size)
         assertEquals("Nirvana", nirvanaResults.first().artistName)
