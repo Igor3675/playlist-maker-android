@@ -2,6 +2,7 @@ package ru.yandex.practicum.playlistmaker.ui.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,10 +12,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +29,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -32,21 +40,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.yandex.practicum.playlistmaker.R
-import ru.yandex.practicum.playlistmaker.ui.theme.PlaylistMakerTheme
+import ru.yandex.practicum.playlistmaker.domain.model.Track
 import ru.yandex.practicum.playlistmaker.ui.theme.YpBlack
+import ru.yandex.practicum.playlistmaker.ui.theme.YpBlue
 import ru.yandex.practicum.playlistmaker.ui.theme.YpLightGray
 import ru.yandex.practicum.playlistmaker.ui.theme.YpTextGray
+import ru.yandex.practicum.playlistmaker.ui.view_model.SearchState
+import ru.yandex.practicum.playlistmaker.ui.view_model.SearchViewModel
 
 @Composable
 fun SearchScreen(
     modifier: Modifier = Modifier,
-    onBackClick: () -> Unit = {}
+    viewModel: SearchViewModel = viewModel(factory = SearchViewModel.getViewModelFactory()),
+    onBackClick: () -> Unit = {},
+    onTrackClick: (Track) -> Unit = {}
 ) {
-    var searchText by rememberSaveable { mutableStateOf("") }
+    val screenState by viewModel.searchScreenState.collectAsState()
+    var text by rememberSaveable { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -78,8 +93,15 @@ fun SearchScreen(
         }
 
         OutlinedTextField(
-            value = searchText,
-            onValueChange = { searchText = it },
+            value = text,
+            onValueChange = {
+                text = it
+                if (it.isBlank()) {
+                    viewModel.clearSearch()
+                } else {
+                    viewModel.search(it)
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -93,12 +115,22 @@ fun SearchScreen(
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = stringResource(id = R.string.search),
+                    modifier = Modifier.clickable {
+                        if (text.isNotBlank()) {
+                            viewModel.search(text)
+                        }
+                    },
                     tint = YpTextGray
                 )
             },
             trailingIcon = {
-                if (searchText.isNotEmpty()) {
-                    IconButton(onClick = { searchText = "" }) {
+                if (text.isNotEmpty()) {
+                    IconButton(
+                        onClick = {
+                            text = ""
+                            viewModel.clearSearch()
+                        }
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Clear,
                             contentDescription = stringResource(id = R.string.clear_search),
@@ -108,6 +140,14 @@ fun SearchScreen(
                 }
             },
             singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(
+                onSearch = {
+                    if (text.isNotBlank()) {
+                        viewModel.search(text)
+                    }
+                }
+            ),
             shape = RoundedCornerShape(8.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = YpLightGray,
@@ -118,13 +158,69 @@ fun SearchScreen(
                 unfocusedTextColor = YpBlack
             )
         )
-    }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun SearchScreenPreview() {
-    PlaylistMakerTheme {
-        SearchScreen()
+        when (val state = screenState) {
+            is SearchState.Initial -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Введите строку для поиска",
+                        color = YpTextGray
+                    )
+                }
+            }
+
+            is SearchState.Searching -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = YpBlue)
+                }
+            }
+
+            is SearchState.Success -> {
+                val tracks = state.list
+                if (tracks.isEmpty()) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.nothing_found),
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontSize = 19.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(tracks.size) { index ->
+                            TrackListItem(
+                                track = tracks[index],
+                                onClick = { onTrackClick(tracks[index]) }
+                            )
+                            HorizontalDivider(thickness = 0.5.dp, color = YpLightGray)
+                        }
+                    }
+                }
+            }
+
+            is SearchState.Fail -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "${stringResource(id = R.string.search_error)}: ${state.error}",
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
+        }
     }
 }
