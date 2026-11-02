@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Playlist Maker</string>
+    <string name="search">Поиск</string>
+    <string name="playlists">Плейлисты</string>
+    <string name="favorites">Избранное</string>
+    <string name="settings">Настройки</string>
+    <string name="search_placeholder">Поиск</string>
+    <string name="clear_search">Очистить поиск</string>
+    <string name="dark_theme">Тёмная тема</string>
+    <string name="share_app">Поделиться приложением</string>
+    <string name="write_to_support">Написать разработчикам</string>
+    <string name="user_agreement">Пользовательское соглашение</string>
+    <string name="share_message">Практикум — курс Android-разработчик: https://practicum.yandex.ru/android-developer/</string>
+    <string name="support_email">babushkin.i.e@edu.mirea.ru</string>
+    <string name="support_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="support_body">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="offer_url">https://yandex.ru/legal/praktikum_offer/</string>
+    <string name="nothing_found">Ничего не нашлось</string>
+    <string name="search_error">Произошла ошибка</string>
+    <string name="retry">Обновить</string>
+    <string name="back">Назад</string>
+    <string name="track_details">Детали трека</string>
+    <string name="artist_label">Исполнитель</string>
+    <string name="duration_label">Длительность</string>
+</resources>
