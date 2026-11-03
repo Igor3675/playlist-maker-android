@@ -23,4 +23,6 @@
     <string name="track_details">Track details</string>
     <string name="artist_label">Artist</string>
     <string name="duration_label">Duration</string>
+    <string name="search_initial_hint">Enter a search query</string>
+    <string name="track_icon_description">Track %1$s</string>
 </resources>
