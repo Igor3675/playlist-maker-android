@@ -8,9 +8,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import ru.yandex.practicum.playlistmaker.data.network.RetrofitNetworkClient
 import ru.yandex.practicum.playlistmaker.data.network.Storage
-import ru.yandex.practicum.playlistmaker.data.network.TracksRepositoryImpl
+import ru.yandex.practicum.playlistmaker.data.repository.TracksRepositoryImpl
 import ru.yandex.practicum.playlistmaker.domain.api.TracksRepository
-import ru.yandex.practicum.playlistmaker.domain.impl.TrackSearchInteractorImpl
 import ru.yandex.practicum.playlistmaker.domain.model.Track
 import ru.yandex.practicum.playlistmaker.ui.view_model.SearchState
 import ru.yandex.practicum.playlistmaker.ui.view_model.SearchViewModel
@@ -42,19 +41,6 @@ class SearchFeatureTest {
         val results = repository.searchTracks("Владивосток")
         assertEquals(1, results.size)
         assertEquals("02:38", results.first().trackTime)
-    }
-
-    @Test
-    fun `interactor delegates search to repository`() = runTest {
-        val repository = TracksRepositoryImpl(
-            networkClient = RetrofitNetworkClient(Storage()),
-            simulatedDelayMs = 0L
-        )
-        val interactor = TrackSearchInteractorImpl(repository)
-        val results = interactor.searchTracks("Billie Jean")
-        assertEquals(1, results.size)
-        assertEquals("Michael Jackson", results.first().artistName)
-        assertEquals("04:54", results.first().trackTime)
     }
 
     @Test
