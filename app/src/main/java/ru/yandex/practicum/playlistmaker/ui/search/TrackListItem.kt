@@ -16,26 +16,31 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.yandex.practicum.playlistmaker.R
 import ru.yandex.practicum.playlistmaker.domain.model.Track
-import ru.yandex.practicum.playlistmaker.ui.theme.YpTextGray
 
 @Composable
 fun TrackListItem(
     track: Track,
     onClick: () -> Unit = {}
 ) {
+    val textGray = colorResource(id = R.color.yp_text_gray)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .padding(
+                horizontal = dimensionResource(id = R.dimen.padding_standard),
+                vertical = dimensionResource(id = R.dimen.padding_vertical_item)
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -46,9 +51,9 @@ fun TrackListItem(
             Image(
                 painter = painterResource(id = R.drawable.ic_music),
                 contentDescription = stringResource(id = R.string.track_icon_description, track.trackName),
-                modifier = Modifier.size(45.dp)
+                modifier = Modifier.size(dimensionResource(id = R.dimen.track_icon_size))
             )
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.padding_regular)))
             Column(
                 modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.Start
@@ -64,7 +69,7 @@ fun TrackListItem(
                 Text(
                     text = "${track.artistName} • ${track.trackTime}",
                     fontSize = 12.sp,
-                    color = YpTextGray,
+                    color = textGray,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -73,8 +78,8 @@ fun TrackListItem(
         Icon(
             painter = painterResource(id = R.drawable.ic_chevron_right),
             contentDescription = null,
-            modifier = Modifier.size(24.dp),
-            tint = YpTextGray
+            modifier = Modifier.size(dimensionResource(id = R.dimen.icon_size)),
+            tint = textGray
         )
     }
 }

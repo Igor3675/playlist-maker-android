@@ -29,16 +29,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.yandex.practicum.playlistmaker.R
 import ru.yandex.practicum.playlistmaker.ui.theme.PlaylistMakerTheme
-import ru.yandex.practicum.playlistmaker.ui.theme.YpBlue
-import ru.yandex.practicum.playlistmaker.ui.theme.YpTextGray
 
 @Composable
 fun SettingsScreen(
@@ -54,6 +53,10 @@ fun SettingsScreen(
     val supportBody = stringResource(id = R.string.support_body)
     val offerUrl = stringResource(id = R.string.offer_url)
 
+    val standardPadding = dimensionResource(id = R.dimen.padding_standard)
+    val largePadding = dimensionResource(id = R.dimen.padding_large)
+    val ypBlue = colorResource(id = R.color.yp_blue)
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -62,19 +65,19 @@ fun SettingsScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 16.dp),
+                .height(dimensionResource(id = R.dimen.toolbar_height))
+                .padding(horizontal = standardPadding),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 contentDescription = stringResource(id = R.string.back),
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(dimensionResource(id = R.dimen.icon_size))
                     .clickable(onClick = onBackClick),
                 tint = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.width(24.dp))
+            Spacer(modifier = Modifier.width(largePadding))
             Text(
                 text = stringResource(id = R.string.settings),
                 fontSize = 22.sp,
@@ -83,13 +86,13 @@ fun SettingsScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(largePadding))
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(61.dp)
-                .padding(horizontal = 16.dp),
+                .height(dimensionResource(id = R.dimen.settings_item_height))
+                .padding(horizontal = standardPadding),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -102,8 +105,8 @@ fun SettingsScreen(
                 checked = darkThemeEnabled,
                 onCheckedChange = { darkThemeEnabled = it },
                 colors = SwitchDefaults.colors(
-                    checkedThumbColor = YpBlue,
-                    checkedTrackColor = YpBlue.copy(alpha = 0.4f)
+                    checkedThumbColor = ypBlue,
+                    checkedTrackColor = ypBlue.copy(alpha = 0.4f)
                 )
             )
         }
@@ -163,9 +166,9 @@ fun SettingsActionItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(61.dp)
+            .height(dimensionResource(id = R.dimen.settings_item_height))
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = dimensionResource(id = R.dimen.padding_standard)),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -177,8 +180,8 @@ fun SettingsActionItem(
         Icon(
             painter = painterResource(id = iconRes),
             contentDescription = title,
-            modifier = Modifier.size(24.dp),
-            tint = YpTextGray
+            modifier = Modifier.size(dimensionResource(id = R.dimen.icon_size)),
+            tint = colorResource(id = R.color.yp_text_gray)
         )
     }
 }

@@ -23,17 +23,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.yandex.practicum.playlistmaker.R
 import ru.yandex.practicum.playlistmaker.ui.theme.PlaylistMakerTheme
-import ru.yandex.practicum.playlistmaker.ui.theme.YpBlue
-import ru.yandex.practicum.playlistmaker.ui.theme.YpTextGray
-import ru.yandex.practicum.playlistmaker.ui.theme.YpWhite
 
 @Composable
 fun MainScreen(
@@ -42,21 +40,24 @@ fun MainScreen(
     onPlaylistsClick: () -> Unit = {},
     onFavoritesClick: () -> Unit = {}
 ) {
+    val topCornerRadius = dimensionResource(id = R.dimen.corner_radius_large)
+    val standardPadding = dimensionResource(id = R.dimen.padding_standard)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(YpBlue)
+            .background(colorResource(id = R.color.yp_blue))
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 16.dp),
+                .height(dimensionResource(id = R.dimen.toolbar_height))
+                .padding(horizontal = standardPadding),
             contentAlignment = Alignment.CenterStart
         ) {
             Text(
                 text = stringResource(R.string.app_name),
-                color = YpWhite,
+                color = colorResource(id = R.color.yp_white),
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -65,13 +66,17 @@ fun MainScreen(
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
+                .clip(RoundedCornerShape(topStart = topCornerRadius, topEnd = topCornerRadius)),
             color = MaterialTheme.colorScheme.background
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 8.dp, start = 16.dp, end = 16.dp)
+                    .padding(
+                        top = dimensionResource(id = R.dimen.padding_medium),
+                        start = standardPadding,
+                        end = standardPadding
+                    )
             ) {
                 MainMenuItem(
                     iconRes = R.drawable.ic_search,
@@ -104,12 +109,15 @@ fun MainMenuItem(
     title: String,
     onClick: () -> Unit
 ) {
+    val iconSize = dimensionResource(id = R.dimen.icon_size)
+    val regularPadding = dimensionResource(id = R.dimen.padding_regular)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(66.dp)
+            .height(dimensionResource(id = R.dimen.main_menu_item_height))
             .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = regularPadding),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -117,10 +125,10 @@ fun MainMenuItem(
             Icon(
                 painter = painterResource(id = iconRes),
                 contentDescription = title,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(iconSize),
                 tint = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(regularPadding))
             Text(
                 text = title,
                 fontSize = 22.sp,
@@ -131,8 +139,8 @@ fun MainMenuItem(
         Icon(
             painter = painterResource(id = R.drawable.ic_chevron_right),
             contentDescription = null,
-            modifier = Modifier.size(24.dp),
-            tint = YpTextGray
+            modifier = Modifier.size(iconSize),
+            tint = colorResource(id = R.color.yp_text_gray)
         )
     }
 }

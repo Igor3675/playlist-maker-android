@@ -36,19 +36,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.yandex.practicum.playlistmaker.R
 import ru.yandex.practicum.playlistmaker.domain.model.Track
-import ru.yandex.practicum.playlistmaker.ui.theme.YpBlack
-import ru.yandex.practicum.playlistmaker.ui.theme.YpBlue
-import ru.yandex.practicum.playlistmaker.ui.theme.YpLightGray
-import ru.yandex.practicum.playlistmaker.ui.theme.YpTextGray
 import ru.yandex.practicum.playlistmaker.ui.view_model.SearchState
 import ru.yandex.practicum.playlistmaker.ui.view_model.SearchViewModel
 
@@ -62,6 +59,12 @@ fun SearchScreen(
     val screenState by viewModel.searchScreenState.collectAsState()
     var text by rememberSaveable { mutableStateOf("") }
 
+    val textGray = colorResource(id = R.color.yp_text_gray)
+    val lightGray = colorResource(id = R.color.yp_light_gray)
+    val ypBlack = colorResource(id = R.color.yp_black)
+    val ypBlue = colorResource(id = R.color.yp_blue)
+    val standardPadding = dimensionResource(id = R.dimen.padding_standard)
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -70,19 +73,19 @@ fun SearchScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 16.dp),
+                .height(dimensionResource(id = R.dimen.toolbar_height))
+                .padding(horizontal = standardPadding),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 contentDescription = stringResource(id = R.string.back),
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(dimensionResource(id = R.dimen.icon_size))
                     .clickable(onClick = onBackClick),
                 tint = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.width(24.dp))
+            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.padding_large)))
             Text(
                 text = stringResource(id = R.string.search),
                 fontSize = 22.sp,
@@ -101,11 +104,14 @@ fun SearchScreen(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(
+                    horizontal = standardPadding,
+                    vertical = dimensionResource(id = R.dimen.padding_medium)
+                ),
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.search_placeholder),
-                    color = YpTextGray
+                    color = textGray
                 )
             },
             leadingIcon = {
@@ -117,7 +123,7 @@ fun SearchScreen(
                             viewModel.search(text)
                         }
                     },
-                    tint = YpTextGray
+                    tint = textGray
                 )
             },
             trailingIcon = {
@@ -131,7 +137,7 @@ fun SearchScreen(
                         Icon(
                             imageVector = Icons.Default.Clear,
                             contentDescription = stringResource(id = R.string.clear_search),
-                            tint = YpTextGray
+                            tint = textGray
                         )
                     }
                 }
@@ -145,14 +151,14 @@ fun SearchScreen(
                     }
                 }
             ),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(dimensionResource(id = R.dimen.corner_radius_medium)),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = YpLightGray,
-                unfocusedContainerColor = YpLightGray,
+                focusedContainerColor = lightGray,
+                unfocusedContainerColor = lightGray,
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
-                focusedTextColor = YpBlack,
-                unfocusedTextColor = YpBlack
+                focusedTextColor = ypBlack,
+                unfocusedTextColor = ypBlack
             )
         )
 
@@ -164,7 +170,7 @@ fun SearchScreen(
                 ) {
                     Text(
                         text = stringResource(id = R.string.search_initial_hint),
-                        color = YpTextGray
+                        color = textGray
                     )
                 }
             }
@@ -174,7 +180,7 @@ fun SearchScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator(color = YpBlue)
+                    CircularProgressIndicator(color = ypBlue)
                 }
             }
 
@@ -193,6 +199,7 @@ fun SearchScreen(
                         )
                     }
                 } else {
+                    val dividerThickness = dimensionResource(id = R.dimen.divider_thickness)
                     LazyColumn(
                         modifier = Modifier.fillMaxSize()
                     ) {
@@ -201,7 +208,10 @@ fun SearchScreen(
                                 track = tracks[index],
                                 onClick = { onTrackClick(tracks[index]) }
                             )
-                            HorizontalDivider(thickness = 0.5.dp, color = YpLightGray)
+                            HorizontalDivider(
+                                thickness = dividerThickness,
+                                color = lightGray
+                            )
                         }
                     }
                 }

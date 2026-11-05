@@ -17,20 +17,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ru.yandex.practicum.playlistmaker.R
 import ru.yandex.practicum.playlistmaker.domain.model.Track
-import ru.yandex.practicum.playlistmaker.ui.theme.YpTextGray
 
 @Composable
 fun DetailsScreen(
     track: Track?,
     onBackClick: () -> Unit = {}
 ) {
+    val largePadding = dimensionResource(id = R.dimen.padding_large)
+    val mediumPadding = dimensionResource(id = R.dimen.padding_medium)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,19 +42,19 @@ fun DetailsScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 16.dp),
+                .height(dimensionResource(id = R.dimen.toolbar_height))
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_standard)),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 contentDescription = stringResource(id = R.string.back),
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(dimensionResource(id = R.dimen.icon_size))
                     .clickable(onClick = onBackClick),
                 tint = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.width(24.dp))
+            Spacer(modifier = Modifier.width(largePadding))
             Text(
                 text = stringResource(id = R.string.track_details),
                 fontSize = 22.sp,
@@ -64,7 +67,7 @@ fun DetailsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(24.dp)
+                    .padding(largePadding)
             ) {
                 Text(
                     text = track.trackName,
@@ -72,17 +75,17 @@ fun DetailsScreen(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(mediumPadding))
                 Text(
                     text = "${stringResource(id = R.string.artist_label)}: ${track.artistName}",
                     fontSize = 16.sp,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(mediumPadding))
                 Text(
                     text = "${stringResource(id = R.string.duration_label)}: ${track.trackTime}",
                     fontSize = 14.sp,
-                    color = YpTextGray
+                    color = colorResource(id = R.color.yp_text_gray)
                 )
             }
         }
