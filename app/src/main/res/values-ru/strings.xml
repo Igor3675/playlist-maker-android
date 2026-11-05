@@ -25,4 +25,19 @@
     <string name="duration_label">Длительность</string>
     <string name="search_initial_hint">Введите строку для поиска</string>
     <string name="track_icon_description">Трек %1$s</string>
+    <string name="new_playlist">Новый плейлист</string>
+    <string name="playlist_name_label">Название*</string>
+    <string name="playlist_description_label">Описание</string>
+    <string name="save_playlist">Сохранить</string>
+    <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
+    <string name="favorites_empty">Ваш список избранного пуст</string>
+    <string name="playlists_empty">Вы не создали ни одного плейлиста</string>
+    <string name="tracks_count">%1$d треков</string>
+    <string name="playlist_empty_tracks">В этом плейлисте нет треков</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="open_bottom_sheet">Открыть BottomSheet</string>
+    <string name="bottom_sheet_greeting">Привет из BottomSheet</string>
+    <string name="close_button">Закрыть</string>
+    <string name="main_screen_content">Основной контент экрана</string>
 </resources>

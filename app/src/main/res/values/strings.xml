@@ -25,4 +25,19 @@
     <string name="duration_label">Duration</string>
     <string name="search_initial_hint">Enter a search query</string>
     <string name="track_icon_description">Track %1$s</string>
+    <string name="new_playlist">New playlist</string>
+    <string name="playlist_name_label">Playlist name*</string>
+    <string name="playlist_description_label">Description</string>
+    <string name="save_playlist">Save</string>
+    <string name="add_to_playlist">Add to playlist</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="favorites_empty">Your favorites list is empty</string>
+    <string name="playlists_empty">You haven\'t created any playlists yet</string>
+    <string name="tracks_count">%1$d tracks</string>
+    <string name="playlist_empty_tracks">There are no tracks in this playlist</string>
+    <string name="delete_playlist">Delete playlist</string>
+    <string name="open_bottom_sheet">Open BottomSheet</string>
+    <string name="bottom_sheet_greeting">Hello from BottomSheet</string>
+    <string name="close_button">Close</string>
+    <string name="main_screen_content">Main screen content</string>
 </resources>
