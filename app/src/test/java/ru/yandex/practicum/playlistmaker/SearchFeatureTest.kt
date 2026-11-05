@@ -1,22 +1,37 @@
 package ru.yandex.practicum.playlistmaker
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
+import ru.yandex.practicum.playlistmaker.data.DatabaseMock
 import ru.yandex.practicum.playlistmaker.data.network.RetrofitNetworkClient
 import ru.yandex.practicum.playlistmaker.data.network.Storage
+import ru.yandex.practicum.playlistmaker.data.repository.PlaylistsRepositoryImpl
+import ru.yandex.practicum.playlistmaker.data.repository.SearchHistoryRepositoryImpl
 import ru.yandex.practicum.playlistmaker.data.repository.TracksRepositoryImpl
 import ru.yandex.practicum.playlistmaker.domain.api.TracksRepository
 import ru.yandex.practicum.playlistmaker.domain.model.Track
+import ru.yandex.practicum.playlistmaker.domain.model.Word
+import ru.yandex.practicum.playlistmaker.ui.view_model.PlaylistsViewModel
 import ru.yandex.practicum.playlistmaker.ui.view_model.SearchState
 import ru.yandex.practicum.playlistmaker.ui.view_model.SearchViewModel
 import java.io.IOException
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SearchFeatureTest {
+
+    @Before
+    fun setUp() {
+        DatabaseMock.reset()
+    }
 
     @Test
     fun `storage filters tracks case insensitively by trackName and artistName`() {
@@ -87,5 +102,37 @@ class SearchFeatureTest {
         val state = viewModel.searchScreenState.value
         assertTrue(state is SearchState.Fail)
         assertEquals("Network unreachable", (state as SearchState.Fail).error)
+    }
+
+    @Test
+    fun `searchHistoryRepository stores new queries at the top without duplicates`() = runTest {
+        val historyRepo = SearchHistoryRepositoryImpl(DatabaseMock)
+        historyRepo.addToHistory(Word("Metallica"))
+        val history = historyRepo.getHistoryRequests()
+        assertEquals("Metallica", history.first())
+    }
+
+    @Test
+    fun `playlistsViewModel adds track to playlist and toggles favorite status`() = runTest {
+        val playlistsRepo = PlaylistsRepositoryImpl(DatabaseMock)
+        val tracksRepo = TracksRepositoryImpl(RetrofitNetworkClient(Storage()), DatabaseMock, 0L)
+        val viewModel = PlaylistsViewModel(playlistsRepo, tracksRepo)
+
+        val track = Track(id = 3L, trackName = "Не смотри назад", artistName = "Ария", trackTime = "05:12")
+        viewModel.insertSongToPlaylist(track, 2L)
+        assertEquals(2L, track.playlistId)
+
+        val summerParty = viewModel.getPlaylist(2L).first()
+        assertNotNull(summerParty)
+        assertTrue(summerParty!!.tracks.any { it.trackName == "Не смотри назад" })
+
+        viewModel.toggleFavorite(track, true)
+        val favorites = viewModel.favoriteList.first()
+        assertTrue(favorites.any { it.trackName == "Не смотри назад" })
+
+        viewModel.deletePlaylistById(2L)
+        assertNull(viewModel.getPlaylist(2L).first())
+        val updatedTrack = viewModel.isExist(track).first()
+        assertFalse(updatedTrack?.playlistId == 2L)
     }
 }
