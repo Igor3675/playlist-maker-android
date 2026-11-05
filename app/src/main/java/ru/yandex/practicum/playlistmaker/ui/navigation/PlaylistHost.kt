@@ -20,10 +20,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -35,7 +36,6 @@ import ru.yandex.practicum.playlistmaker.ui.main.MainScreen
 import ru.yandex.practicum.playlistmaker.ui.search.DetailsScreen
 import ru.yandex.practicum.playlistmaker.ui.search.SearchScreen
 import ru.yandex.practicum.playlistmaker.ui.setting.SettingsScreen
-import ru.yandex.practicum.playlistmaker.ui.theme.YpTextGray
 import ru.yandex.practicum.playlistmaker.ui.view_model.SearchViewModel
 import ru.yandex.practicum.playlistmaker.ui.view_model.TrackViewModel
 
@@ -135,19 +135,19 @@ private fun PlaceholderSectionScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 16.dp),
+                .height(dimensionResource(id = R.dimen.toolbar_height))
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_standard)),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 contentDescription = stringResource(id = R.string.back),
                 modifier = Modifier
-                    .size(24.dp)
+                    .size(dimensionResource(id = R.dimen.icon_size))
                     .clickable(onClick = onBackClick),
                 tint = MaterialTheme.colorScheme.onBackground
             )
-            Spacer(modifier = Modifier.width(24.dp))
+            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.padding_large)))
             Text(
                 text = title,
                 fontSize = 22.sp,
@@ -161,7 +161,7 @@ private fun PlaceholderSectionScreen(
         ) {
             Text(
                 text = emptyMessage,
-                color = YpTextGray,
+                color = colorResource(id = R.color.yp_text_gray),
                 fontSize = 18.sp
             )
         }

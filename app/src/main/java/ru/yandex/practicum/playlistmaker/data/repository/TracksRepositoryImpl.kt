@@ -1,4 +1,4 @@
-package ru.yandex.practicum.playlistmaker.data.network
+package ru.yandex.practicum.playlistmaker.data.repository
 
 import kotlinx.coroutines.delay
 import ru.yandex.practicum.playlistmaker.data.NetworkClient
