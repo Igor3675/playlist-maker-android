@@ -23,4 +23,6 @@
     <string name="track_details">Детали трека</string>
     <string name="artist_label">Исполнитель</string>
     <string name="duration_label">Длительность</string>
+    <string name="search_initial_hint">Введите строку для поиска</string>
+    <string name="track_icon_description">Трек %1$s</string>
 </resources>
